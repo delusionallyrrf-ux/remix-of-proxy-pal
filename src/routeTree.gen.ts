@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicOwnerRouteImport } from './routes/api/public/owner'
 import { Route as ApiPublicStolensiteSplatRouteImport } from './routes/api/public/stolensite/$'
 import { Route as ApiPublicNikehubSplatRouteImport } from './routes/api/public/nikehub/$'
 import { Route as ApiPublicDeglovedSplatRouteImport } from './routes/api/public/degloved/$'
@@ -17,6 +18,11 @@ import { Route as ApiPublicDeglovedSplatRouteImport } from './routes/api/public/
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicOwnerRoute = ApiPublicOwnerRouteImport.update({
+  id: '/api/public/owner',
+  path: '/api/public/owner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicStolensiteSplatRoute =
@@ -38,12 +44,14 @@ const ApiPublicDeglovedSplatRoute = ApiPublicDeglovedSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
@@ -51,6 +59,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
@@ -59,18 +68,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/public/owner'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/public/owner'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
   id:
     | '__root__'
     | '/'
+    | '/api/public/owner'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
@@ -78,6 +90,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicOwnerRoute: typeof ApiPublicOwnerRoute
   ApiPublicDeglovedSplatRoute: typeof ApiPublicDeglovedSplatRoute
   ApiPublicNikehubSplatRoute: typeof ApiPublicNikehubSplatRoute
   ApiPublicStolensiteSplatRoute: typeof ApiPublicStolensiteSplatRoute
@@ -90,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/owner': {
+      id: '/api/public/owner'
+      path: '/api/public/owner'
+      fullPath: '/api/public/owner'
+      preLoaderRoute: typeof ApiPublicOwnerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/stolensite/$': {
@@ -118,6 +138,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicOwnerRoute: ApiPublicOwnerRoute,
   ApiPublicDeglovedSplatRoute: ApiPublicDeglovedSplatRoute,
   ApiPublicNikehubSplatRoute: ApiPublicNikehubSplatRoute,
   ApiPublicStolensiteSplatRoute: ApiPublicStolensiteSplatRoute,
