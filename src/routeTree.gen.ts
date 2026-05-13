@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiPublicProxySplatRouteImport } from './routes/api/public/proxy/$'
+import { Route as ApiPublicStolensiteSplatRouteImport } from './routes/api/public/stolensite/$'
 import { Route as ApiPublicNikehubSplatRouteImport } from './routes/api/public/nikehub/$'
 import { Route as ApiPublicDeglovedSplatRouteImport } from './routes/api/public/degloved/$'
 
@@ -19,11 +19,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicProxySplatRoute = ApiPublicProxySplatRouteImport.update({
-  id: '/api/public/proxy/$',
-  path: '/api/public/proxy/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ApiPublicStolensiteSplatRoute =
+  ApiPublicStolensiteSplatRouteImport.update({
+    id: '/api/public/stolensite/$',
+    path: '/api/public/stolensite/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicNikehubSplatRoute = ApiPublicNikehubSplatRouteImport.update({
   id: '/api/public/nikehub/$',
   path: '/api/public/nikehub/$',
@@ -39,20 +40,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
-  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
+  '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
-  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
+  '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
-  '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
+  '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -60,26 +61,26 @@ export interface FileRouteTypes {
     | '/'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
-    | '/api/public/proxy/$'
+    | '/api/public/stolensite/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
-    | '/api/public/proxy/$'
+    | '/api/public/stolensite/$'
   id:
     | '__root__'
     | '/'
     | '/api/public/degloved/$'
     | '/api/public/nikehub/$'
-    | '/api/public/proxy/$'
+    | '/api/public/stolensite/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicDeglovedSplatRoute: typeof ApiPublicDeglovedSplatRoute
   ApiPublicNikehubSplatRoute: typeof ApiPublicNikehubSplatRoute
-  ApiPublicProxySplatRoute: typeof ApiPublicProxySplatRoute
+  ApiPublicStolensiteSplatRoute: typeof ApiPublicStolensiteSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -91,11 +92,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/proxy/$': {
-      id: '/api/public/proxy/$'
-      path: '/api/public/proxy/$'
-      fullPath: '/api/public/proxy/$'
-      preLoaderRoute: typeof ApiPublicProxySplatRouteImport
+    '/api/public/stolensite/$': {
+      id: '/api/public/stolensite/$'
+      path: '/api/public/stolensite/$'
+      fullPath: '/api/public/stolensite/$'
+      preLoaderRoute: typeof ApiPublicStolensiteSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/nikehub/$': {
@@ -119,8 +120,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicDeglovedSplatRoute: ApiPublicDeglovedSplatRoute,
   ApiPublicNikehubSplatRoute: ApiPublicNikehubSplatRoute,
-  ApiPublicProxySplatRoute: ApiPublicProxySplatRoute,
+  ApiPublicStolensiteSplatRoute: ApiPublicStolensiteSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
