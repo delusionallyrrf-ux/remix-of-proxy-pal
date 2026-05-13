@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "My site for school" },
+      { name: "description", content: "Proxy Pal acts as a web proxy, allowing users to access and display content from specified external websites." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "My site for school" },
+      { property: "og:description", content: "Proxy Pal acts as a web proxy, allowing users to access and display content from specified external websites." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "My site for school" },
+      { name: "twitter:description", content: "Proxy Pal acts as a web proxy, allowing users to access and display content from specified external websites." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/36022ced-7623-405a-b76a-8e04d9cd35dc/id-preview-f33738d9--5334f9f1-2bd4-4d58-be3c-2ae2a33a8673.lovable.app-1778716615592.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/36022ced-7623-405a-b76a-8e04d9cd35dc/id-preview-f33738d9--5334f9f1-2bd4-4d58-be3c-2ae2a33a8673.lovable.app-1778716615592.png" },
     ],
     links: [
       {
