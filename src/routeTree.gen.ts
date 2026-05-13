@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicProxySplatRouteImport } from './routes/api/public/proxy/$'
+import { Route as ApiPublicDeglovedSplatRouteImport } from './routes/api/public/degloved/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const ApiPublicProxySplatRoute = ApiPublicProxySplatRouteImport.update({
   path: '/api/public/proxy/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDeglovedSplatRoute = ApiPublicDeglovedSplatRouteImport.update({
+  id: '/api/public/degloved/$',
+  path: '/api/public/degloved/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
   '/api/public/proxy/$': typeof ApiPublicProxySplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/proxy/$'
+  fullPaths: '/' | '/api/public/degloved/$' | '/api/public/proxy/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/proxy/$'
-  id: '__root__' | '/' | '/api/public/proxy/$'
+  to: '/' | '/api/public/degloved/$' | '/api/public/proxy/$'
+  id: '__root__' | '/' | '/api/public/degloved/$' | '/api/public/proxy/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicDeglovedSplatRoute: typeof ApiPublicDeglovedSplatRoute
   ApiPublicProxySplatRoute: typeof ApiPublicProxySplatRoute
 }
 
@@ -65,13 +75,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicProxySplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/degloved/$': {
+      id: '/api/public/degloved/$'
+      path: '/api/public/degloved/$'
+      fullPath: '/api/public/degloved/$'
+      preLoaderRoute: typeof ApiPublicDeglovedSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicDeglovedSplatRoute: ApiPublicDeglovedSplatRoute,
   ApiPublicProxySplatRoute: ApiPublicProxySplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
