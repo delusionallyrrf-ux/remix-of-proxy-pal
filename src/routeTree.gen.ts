@@ -25,12 +25,11 @@ const ApiPublicOwnerRoute = ApiPublicOwnerRouteImport.update({
   path: '/api/public/owner',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicStolensiteSplatRoute =
-  ApiPublicStolensiteSplatRouteImport.update({
-    id: '/api/public/stolensite/$',
-    path: '/api/public/stolensite/$',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const ApiPublicStolensiteSplatRoute = ApiPublicStolensiteSplatRouteImport.update({
+  id: '/api/public/stolensite/$',
+  path: '/api/public/stolensite/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicNikehubSplatRoute = ApiPublicNikehubSplatRouteImport.update({
   id: '/api/public/nikehub/$',
   path: '/api/public/nikehub/$',
@@ -146,13 +145,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
