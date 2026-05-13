@@ -6,7 +6,6 @@ type ProxyOptions = {
 const PASS_THROUGH_REQUEST_HEADERS = [
   "accept",
   "accept-language",
-  "user-agent",
   "cookie",
   "content-type",
   "range",
@@ -97,7 +96,7 @@ async function proxyHandler({ request }: { request: Request }, options: ProxyOpt
     const v = request.headers.get(h);
     if (v) headers.set(h, v);
   }
-  if (!headers.has("user-agent")) headers.set("user-agent", DEFAULT_USER_AGENT);
+  headers.set("user-agent", DEFAULT_USER_AGENT);
   headers.set("referer", target + "/");
   headers.set("origin", target);
   headers.set("accept-encoding", "identity");
