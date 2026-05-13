@@ -13,6 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicOwnerRouteImport } from './routes/api/public/owner'
 import { Route as ApiPublicStolensiteSplatRouteImport } from './routes/api/public/stolensite/$'
 import { Route as ApiPublicNikehubSplatRouteImport } from './routes/api/public/nikehub/$'
+import { Route as ApiPublicGames6SplatRouteImport } from './routes/api/public/games6/$'
+import { Route as ApiPublicGames5SplatRouteImport } from './routes/api/public/games5/$'
+import { Route as ApiPublicGames4SplatRouteImport } from './routes/api/public/games4/$'
+import { Route as ApiPublicGames3SplatRouteImport } from './routes/api/public/games3/$'
+import { Route as ApiPublicGames2SplatRouteImport } from './routes/api/public/games2/$'
+import { Route as ApiPublicGames1SplatRouteImport } from './routes/api/public/games1/$'
 import { Route as ApiPublicDeglovedSplatRouteImport } from './routes/api/public/degloved/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -36,6 +42,36 @@ const ApiPublicNikehubSplatRoute = ApiPublicNikehubSplatRouteImport.update({
   path: '/api/public/nikehub/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicGames6SplatRoute = ApiPublicGames6SplatRouteImport.update({
+  id: '/api/public/games6/$',
+  path: '/api/public/games6/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGames5SplatRoute = ApiPublicGames5SplatRouteImport.update({
+  id: '/api/public/games5/$',
+  path: '/api/public/games5/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGames4SplatRoute = ApiPublicGames4SplatRouteImport.update({
+  id: '/api/public/games4/$',
+  path: '/api/public/games4/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGames3SplatRoute = ApiPublicGames3SplatRouteImport.update({
+  id: '/api/public/games3/$',
+  path: '/api/public/games3/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGames2SplatRoute = ApiPublicGames2SplatRouteImport.update({
+  id: '/api/public/games2/$',
+  path: '/api/public/games2/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicGames1SplatRoute = ApiPublicGames1SplatRouteImport.update({
+  id: '/api/public/games1/$',
+  path: '/api/public/games1/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicDeglovedSplatRoute = ApiPublicDeglovedSplatRouteImport.update({
   id: '/api/public/degloved/$',
   path: '/api/public/degloved/$',
@@ -46,6 +82,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
+  '/api/public/games1/$': typeof ApiPublicGames1SplatRoute
+  '/api/public/games2/$': typeof ApiPublicGames2SplatRoute
+  '/api/public/games3/$': typeof ApiPublicGames3SplatRoute
+  '/api/public/games4/$': typeof ApiPublicGames4SplatRoute
+  '/api/public/games5/$': typeof ApiPublicGames5SplatRoute
+  '/api/public/games6/$': typeof ApiPublicGames6SplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
@@ -53,6 +95,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
+  '/api/public/games1/$': typeof ApiPublicGames1SplatRoute
+  '/api/public/games2/$': typeof ApiPublicGames2SplatRoute
+  '/api/public/games3/$': typeof ApiPublicGames3SplatRoute
+  '/api/public/games4/$': typeof ApiPublicGames4SplatRoute
+  '/api/public/games5/$': typeof ApiPublicGames5SplatRoute
+  '/api/public/games6/$': typeof ApiPublicGames6SplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
@@ -61,6 +109,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/degloved/$': typeof ApiPublicDeglovedSplatRoute
+  '/api/public/games1/$': typeof ApiPublicGames1SplatRoute
+  '/api/public/games2/$': typeof ApiPublicGames2SplatRoute
+  '/api/public/games3/$': typeof ApiPublicGames3SplatRoute
+  '/api/public/games4/$': typeof ApiPublicGames4SplatRoute
+  '/api/public/games5/$': typeof ApiPublicGames5SplatRoute
+  '/api/public/games6/$': typeof ApiPublicGames6SplatRoute
   '/api/public/nikehub/$': typeof ApiPublicNikehubSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
 }
@@ -70,6 +124,12 @@ export interface FileRouteTypes {
     | '/'
     | '/api/public/owner'
     | '/api/public/degloved/$'
+    | '/api/public/games1/$'
+    | '/api/public/games2/$'
+    | '/api/public/games3/$'
+    | '/api/public/games4/$'
+    | '/api/public/games5/$'
+    | '/api/public/games6/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
   fileRoutesByTo: FileRoutesByTo
@@ -77,6 +137,12 @@ export interface FileRouteTypes {
     | '/'
     | '/api/public/owner'
     | '/api/public/degloved/$'
+    | '/api/public/games1/$'
+    | '/api/public/games2/$'
+    | '/api/public/games3/$'
+    | '/api/public/games4/$'
+    | '/api/public/games5/$'
+    | '/api/public/games6/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
   id:
@@ -84,6 +150,12 @@ export interface FileRouteTypes {
     | '/'
     | '/api/public/owner'
     | '/api/public/degloved/$'
+    | '/api/public/games1/$'
+    | '/api/public/games2/$'
+    | '/api/public/games3/$'
+    | '/api/public/games4/$'
+    | '/api/public/games5/$'
+    | '/api/public/games6/$'
     | '/api/public/nikehub/$'
     | '/api/public/stolensite/$'
   fileRoutesById: FileRoutesById
@@ -92,6 +164,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicOwnerRoute: typeof ApiPublicOwnerRoute
   ApiPublicDeglovedSplatRoute: typeof ApiPublicDeglovedSplatRoute
+  ApiPublicGames1SplatRoute: typeof ApiPublicGames1SplatRoute
+  ApiPublicGames2SplatRoute: typeof ApiPublicGames2SplatRoute
+  ApiPublicGames3SplatRoute: typeof ApiPublicGames3SplatRoute
+  ApiPublicGames4SplatRoute: typeof ApiPublicGames4SplatRoute
+  ApiPublicGames5SplatRoute: typeof ApiPublicGames5SplatRoute
+  ApiPublicGames6SplatRoute: typeof ApiPublicGames6SplatRoute
   ApiPublicNikehubSplatRoute: typeof ApiPublicNikehubSplatRoute
   ApiPublicStolensiteSplatRoute: typeof ApiPublicStolensiteSplatRoute
 }
@@ -126,6 +204,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicNikehubSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/games6/$': {
+      id: '/api/public/games6/$'
+      path: '/api/public/games6/$'
+      fullPath: '/api/public/games6/$'
+      preLoaderRoute: typeof ApiPublicGames6SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/games5/$': {
+      id: '/api/public/games5/$'
+      path: '/api/public/games5/$'
+      fullPath: '/api/public/games5/$'
+      preLoaderRoute: typeof ApiPublicGames5SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/games4/$': {
+      id: '/api/public/games4/$'
+      path: '/api/public/games4/$'
+      fullPath: '/api/public/games4/$'
+      preLoaderRoute: typeof ApiPublicGames4SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/games3/$': {
+      id: '/api/public/games3/$'
+      path: '/api/public/games3/$'
+      fullPath: '/api/public/games3/$'
+      preLoaderRoute: typeof ApiPublicGames3SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/games2/$': {
+      id: '/api/public/games2/$'
+      path: '/api/public/games2/$'
+      fullPath: '/api/public/games2/$'
+      preLoaderRoute: typeof ApiPublicGames2SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/games1/$': {
+      id: '/api/public/games1/$'
+      path: '/api/public/games1/$'
+      fullPath: '/api/public/games1/$'
+      preLoaderRoute: typeof ApiPublicGames1SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/degloved/$': {
       id: '/api/public/degloved/$'
       path: '/api/public/degloved/$'
@@ -140,6 +260,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicOwnerRoute: ApiPublicOwnerRoute,
   ApiPublicDeglovedSplatRoute: ApiPublicDeglovedSplatRoute,
+  ApiPublicGames1SplatRoute: ApiPublicGames1SplatRoute,
+  ApiPublicGames2SplatRoute: ApiPublicGames2SplatRoute,
+  ApiPublicGames3SplatRoute: ApiPublicGames3SplatRoute,
+  ApiPublicGames4SplatRoute: ApiPublicGames4SplatRoute,
+  ApiPublicGames5SplatRoute: ApiPublicGames5SplatRoute,
+  ApiPublicGames6SplatRoute: ApiPublicGames6SplatRoute,
   ApiPublicNikehubSplatRoute: ApiPublicNikehubSplatRoute,
   ApiPublicStolensiteSplatRoute: ApiPublicStolensiteSplatRoute,
 }
