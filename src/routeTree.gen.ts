@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicOwnerRouteImport } from './routes/api/public/owner'
+import { Route as ApiPublicStolensite2SplatRouteImport } from './routes/api/public/stolensite2/$'
 import { Route as ApiPublicStolensiteSplatRouteImport } from './routes/api/public/stolensite/$'
-import { Route as ApiPublicBrotatoSplatRouteImport } from './routes/api/public/brotato/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,63 +24,64 @@ const ApiPublicOwnerRoute = ApiPublicOwnerRouteImport.update({
   path: '/api/public/owner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicStolensite2SplatRoute =
+  ApiPublicStolensite2SplatRouteImport.update({
+    id: '/api/public/stolensite2/$',
+    path: '/api/public/stolensite2/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicStolensiteSplatRoute =
   ApiPublicStolensiteSplatRouteImport.update({
     id: '/api/public/stolensite/$',
     path: '/api/public/stolensite/$',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicBrotatoSplatRoute = ApiPublicBrotatoSplatRouteImport.update({
-  id: '/api/public/brotato/$',
-  path: '/api/public/brotato/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
-  '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
+  '/api/public/stolensite2/$': typeof ApiPublicStolensite2SplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
-  '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
+  '/api/public/stolensite2/$': typeof ApiPublicStolensite2SplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
-  '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
+  '/api/public/stolensite2/$': typeof ApiPublicStolensite2SplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/api/public/owner'
-    | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
+    | '/api/public/stolensite2/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api/public/owner'
-    | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
+    | '/api/public/stolensite2/$'
   id:
     | '__root__'
     | '/'
     | '/api/public/owner'
-    | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
+    | '/api/public/stolensite2/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiPublicOwnerRoute: typeof ApiPublicOwnerRoute
-  ApiPublicBrotatoSplatRoute: typeof ApiPublicBrotatoSplatRoute
   ApiPublicStolensiteSplatRoute: typeof ApiPublicStolensiteSplatRoute
+  ApiPublicStolensite2SplatRoute: typeof ApiPublicStolensite2SplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,18 +100,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicOwnerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/stolensite2/$': {
+      id: '/api/public/stolensite2/$'
+      path: '/api/public/stolensite2/$'
+      fullPath: '/api/public/stolensite2/$'
+      preLoaderRoute: typeof ApiPublicStolensite2SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/stolensite/$': {
       id: '/api/public/stolensite/$'
       path: '/api/public/stolensite/$'
       fullPath: '/api/public/stolensite/$'
       preLoaderRoute: typeof ApiPublicStolensiteSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/brotato/$': {
-      id: '/api/public/brotato/$'
-      path: '/api/public/brotato/$'
-      fullPath: '/api/public/brotato/$'
-      preLoaderRoute: typeof ApiPublicBrotatoSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -119,8 +120,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiPublicOwnerRoute: ApiPublicOwnerRoute,
-  ApiPublicBrotatoSplatRoute: ApiPublicBrotatoSplatRoute,
   ApiPublicStolensiteSplatRoute: ApiPublicStolensiteSplatRoute,
+  ApiPublicStolensite2SplatRoute: ApiPublicStolensite2SplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
