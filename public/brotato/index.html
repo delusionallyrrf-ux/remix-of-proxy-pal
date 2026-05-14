@@ -134,9 +134,26 @@
 				focusCanvas: true,
 				gdnativeLibs: [],
 				args: [],
+				persistentPaths: ['/userfs', '/home/web_user'],
+				persistentDrops: false,
 				fileSizes: { 'brotato.wasm': 25701650 },
 			};
 			const engine = new Engine(cfg);
+
+			// Aggressive save persistence: Godot's IDBFS only flushes on shutdown.
+			// Force-sync to IndexedDB periodically + on any tab/visibility event so
+			// save data survives crashes, power loss, and forced tab closes.
+			function syncFS() {
+				try {
+					const FS = engine.rtenv && engine.rtenv.FS;
+					if (FS && FS.syncfs) FS.syncfs(false, function () {});
+				} catch (e) { /* engine not ready yet */ }
+			}
+			setInterval(syncFS, 5000);
+			window.addEventListener('visibilitychange', syncFS);
+			window.addEventListener('pagehide', syncFS);
+			window.addEventListener('beforeunload', syncFS);
+			window.addEventListener('blur', syncFS);
 
 			if (!Engine.isWebGLAvailable()) throw new Error('WebGL not available.');
 
