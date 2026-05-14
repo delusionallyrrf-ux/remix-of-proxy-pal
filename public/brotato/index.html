@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+<title>Brotato</title>
+<link id="-gd-engine-icon" rel="icon" type="image/png" href="brotato.icon.png" />
+<link rel="apple-touch-icon" href="brotato.apple-touch-icon.png" />
+<style>
+	* { box-sizing: border-box; }
+	html, body {
+		margin: 0; padding: 0; width: 100%; height: 100%;
+		background: #000;
+		font-family: system-ui, sans-serif;
+		overflow: hidden;
+		touch-action: none;
+		color: #fff;
+	}
+	#canvas { display: block; margin: 0 auto; outline: none; }
+
+	#loader {
+		position: fixed; inset: 0;
+		display: flex; flex-direction: column;
+		align-items: center; justify-content: center;
+		background: url('bg.png') center/cover no-repeat, #000;
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+		z-index: 9999;
+		transition: opacity 0.5s ease;
+	}
+	#loader.done { opacity: 0; pointer-events: none; }
+
+	.bar-wrap {
+		width: min(480px, 80vw);
+		background: rgba(0,0,0,0.6);
+		border: 2px solid #fff;
+		border-radius: 4px;
+		padding: 3px;
+		overflow: hidden;
+	}
+	.bar {
+		height: 20px;
+		width: 0%;
+		max-width: 100%;
+		background: #fff;
+		transition: width 0.2s ease-out;
+	}
+	.stat {
+		margin-top: 10px;
+		font-size: 16px;
+		text-shadow: 1px 1px 2px #000, 0 0 6px #000;
+	}
+	.error {
+		color: #ff4a3d;
+		margin-top: 20px;
+		padding: 10px 16px;
+		background: rgba(0,0,0,0.7);
+		border: 1px solid #ff4a3d;
+		border-radius: 4px;
+		max-width: 80vw;
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+<canvas id="canvas">HTML5 canvas unsupported.</canvas>
+
+<div id="loader">
+	<div class="bar-wrap"><div class="bar" id="bar"></div></div>
+	<div class="stat" id="stat">0.0 / 0.0 MB</div>
+	<div id="err"></div>
+</div>
+
+<script src="brotato.js"></script>
+<script>
+(function() {
+	const PARTS = [
+		'brotato.pck.part.00',
+		'brotato.pck.part.01',
+		'brotato.pck.part.02',
+	];
+	const PART_SIZES = [41943040, 41943040, 22089520];
+	const TOTAL_SIZE = PART_SIZES.reduce((a, b) => a + b, 0);
+
+	const bar = document.getElementById('bar');
+	const stat = document.getElementById('stat');
+	const errEl = document.getElementById('err');
+	const loader = document.getElementById('loader');
+
+	const loaded = PARTS.map(() => 0);
+
+	function updateUI() {
+		const got = loaded.reduce((a, b) => a + b, 0);
+		const pct = (got / TOTAL_SIZE) * 100;
+		bar.style.width = pct + '%';
+		stat.textContent = (got / 1048576).toFixed(1) + '/' + (TOTAL_SIZE / 1048576).toFixed(1) + 'mb';
+	}
+
+	async function fetchPart(url, idx) {
+		const res = await fetch(url);
+		if (!res.ok) throw new Error('Failed to fetch ' + url + ': ' + res.status);
+		updateUI();
+		const reader = res.body.getReader();
+		const chunks = [];
+		while (true) {
+			const { done, value } = await reader.read();
+			if (done) break;
+			chunks.push(value);
+			loaded[idx] += value.length;
+			updateUI();
+		}
+		const total = chunks.reduce((s, c) => s + c.length, 0);
+		const out = new Uint8Array(total);
+		let off = 0;
+		for (const c of chunks) { out.set(c, off); off += c.length; }
+		return out;
+	}
+
+	async function boot() {
+		try {
+			const parts = await Promise.all(PARTS.map((u, i) => fetchPart(u, i)));
+			const totalLen = parts.reduce((s, p) => s + p.length, 0);
+			const merged = new Uint8Array(totalLen);
+			let off = 0;
+			for (const p of parts) { merged.set(p, off); off += p.length; }
+			const blob = new Blob([merged], { type: 'application/octet-stream' });
+			const blobUrl = URL.createObjectURL(blob);
+
+			const cfg = {
+				executable: 'brotato',
+				mainPack: blobUrl,
+				canvasResizePolicy: 2,
+				experimentalVK: false,
+				focusCanvas: true,
+				gdnativeLibs: [],
+				args: [],
+				fileSizes: { 'brotato.wasm': 25701650 },
+			};
+			const engine = new Engine(cfg);
+
+			if (!Engine.isWebGLAvailable()) throw new Error('WebGL not available.');
+
+			await engine.startGame({
+				onProgress: function (cur, tot) {
+					if (tot > 0) {
+						const p = 95 + (cur / tot) * 5;
+						bar.style.width = p + '%';
+					}
+				},
+			});
+
+			loader.classList.add('done');
+			setTimeout(() => { loader.style.display = 'none'; }, 600);
+		} catch (e) {
+			console.error(e);
+			errEl.innerHTML = '<div class="error">' + (e.message || e) + '</div>';
+		}
+	}
+
+	boot();
+})();
+</script>
+</body>
+</html>
