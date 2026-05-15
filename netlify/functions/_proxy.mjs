@@ -1,4 +1,4 @@
-// Shared proxy logic for Netlify Functions - Fixed for Global Root Proxying
+// Shared proxy logic for Netlify Functions - Fully Versatile & Reusable
 const PASS_THROUGH = ["accept", "accept-language", "cookie", "content-type", "range"];
 const SKIP_RESPONSE = new Set([
   "content-encoding",
@@ -16,7 +16,6 @@ const SKIP_RESPONSE = new Set([
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36";
 const escapeRegExp = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-// Rewrites relative paths so every sub-asset is requested through your proxy router
 function rewriteRoots(body, prefix) {
   const p = (rest) => `${prefix}/${rest}`.replace(/\/+/g, "/");
   body = body.replace(/\b(href|src|action|poster)\s*=\s*"\/(?!\/)([^"]*)"/gi, (_, a, r) => `${a}="${p(r)}"`);
@@ -31,7 +30,15 @@ function isText(res) {
   return ct.includes("text/") || ct.includes("javascript") || ct.includes("json") || ct.includes("xml");
 }
 
-export async function proxy(request, { target = "https://pages.dev", prefix = "" } = {}) {
+export async function proxy(request, options = {}) {
+  let target = options.target;
+  let prefix = options.prefix || "";
+
+  // Safety check: require a target URL from the directory file
+  if (!target) {
+    return new Response("Configuration Error: No proxy target URL provided in this function file.", { status: 500 });
+  }
+
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -47,7 +54,6 @@ export async function proxy(request, { target = "https://pages.dev", prefix = ""
   target = target.replace(/\/+$/, "");
   prefix = prefix.replace(/\/+$/, "");
 
-  // Dynamically resolve subpaths across the entire site instead of a single directory
   const sub = url.pathname.startsWith(prefix) ? (url.pathname.slice(prefix.length) || "/") : url.pathname;
   const targetUrl = new URL(sub + url.search, target + "/").toString();
 
@@ -85,7 +91,6 @@ export async function proxy(request, { target = "https://pages.dev", prefix = ""
     out.set("Access-Control-Allow-Headers", "*");
     out.set("cache-control", "no-store, no-cache");
 
-    // Fix absolute location headers during server redirects
     if (res.status >= 300 && res.status < 400) {
       const loc = res.headers.get("location");
       if (loc) {
@@ -104,7 +109,6 @@ export async function proxy(request, { target = "https://pages.dev", prefix = ""
 
     let body = await res.text();
     
-    // Replace domain mappings globally
     body = body.replace(new RegExp(`https?://${escapedHost}`, "gi"), proxyBase);
     body = body.replace(new RegExp(`//${escapedHost}`, "gi"), `//${new URL(publicOrigin).host}${prefix}`);
 
