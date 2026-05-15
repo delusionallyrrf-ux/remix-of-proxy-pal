@@ -1,0 +1,73 @@
+[build]
+  command = "bun install && bunx vite build --config vite.netlify.config.ts"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Brotato's threaded WASM build needs cross-origin isolation.
+[[headers]]
+  for = "/brotato/*"
+  [headers.values]
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+[[headers]]
+  for = "/brotato/brotato.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+[[headers]]
+  for = "/brotato/*.pck.part.*"
+  [headers.values]
+    Content-Type = "application/octet-stream"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+# Proxy routes -> Netlify Functions
+[[redirects]]
+  from = "/api/public/stolensite/*"
+  to = "/.netlify/functions/stolensite/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/public/stolensite"
+  to = "/.netlify/functions/stolensite"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/public/stolensite2/*"
+  to = "/.netlify/functions/stolensite2/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/public/stolensite2"
+  to = "/.netlify/functions/stolensite2"
+  status = 200
+  force = true
+
+# Brotato redirect handler (was a server route) -> just rewrite to static
+[[redirects]]
+  from = "/api/public/brotato/*"
+  to = "/brotato/:splat"
+  status = 302
+
+[[redirects]]
+  from = "/api/public/brotato"
+  to = "/brotato/index.html"
+  status = 302
+
+# SPA fallback for client-side routing (must be last)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
