@@ -67,7 +67,9 @@
   status = 302
 
 # SPA fallback for client-side routing (must be last)
+# Exclude /api/public/* routes so they're handled by Netlify Functions
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  conditions = {NOT = [":path=/api/public/*"]}
