@@ -32,7 +32,7 @@ const HTML = `<!doctype html>
 (function(){
   var KEY="monoxide_unlocked";
   var CODE="monoxideactivate";
-  var TARGET="https://veterans4education.org/";
+  var TARGET="https://monoxide.dev/";
   var unlocked=false;
   try{unlocked=sessionStorage.getItem(KEY)==="1"}catch(_){}
   if(unlocked){
