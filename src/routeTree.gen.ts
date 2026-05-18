@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicOwnerRouteImport } from './routes/api/public/owner'
+import { Route as ApiPublicMonoxideRouteImport } from './routes/api/public/monoxide'
 import { Route as ApiPublicStolensite2SplatRouteImport } from './routes/api/public/stolensite2/$'
 import { Route as ApiPublicStolensiteSplatRouteImport } from './routes/api/public/stolensite/$'
 import { Route as ApiPublicBrotatoSplatRouteImport } from './routes/api/public/brotato/$'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApiPublicOwnerRoute = ApiPublicOwnerRouteImport.update({
   id: '/api/public/owner',
   path: '/api/public/owner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicMonoxideRoute = ApiPublicMonoxideRouteImport.update({
+  id: '/api/public/monoxide',
+  path: '/api/public/monoxide',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicStolensite2SplatRoute =
@@ -45,6 +51,7 @@ const ApiPublicBrotatoSplatRoute = ApiPublicBrotatoSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/public/monoxide': typeof ApiPublicMonoxideRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/public/monoxide': typeof ApiPublicMonoxideRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
@@ -60,6 +68,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/public/monoxide': typeof ApiPublicMonoxideRoute
   '/api/public/owner': typeof ApiPublicOwnerRoute
   '/api/public/brotato/$': typeof ApiPublicBrotatoSplatRoute
   '/api/public/stolensite/$': typeof ApiPublicStolensiteSplatRoute
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/public/monoxide'
     | '/api/public/owner'
     | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
@@ -76,6 +86,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/public/monoxide'
     | '/api/public/owner'
     | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
@@ -83,6 +94,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/api/public/monoxide'
     | '/api/public/owner'
     | '/api/public/brotato/$'
     | '/api/public/stolensite/$'
@@ -91,6 +103,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiPublicMonoxideRoute: typeof ApiPublicMonoxideRoute
   ApiPublicOwnerRoute: typeof ApiPublicOwnerRoute
   ApiPublicBrotatoSplatRoute: typeof ApiPublicBrotatoSplatRoute
   ApiPublicStolensiteSplatRoute: typeof ApiPublicStolensiteSplatRoute
@@ -111,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/owner'
       fullPath: '/api/public/owner'
       preLoaderRoute: typeof ApiPublicOwnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/monoxide': {
+      id: '/api/public/monoxide'
+      path: '/api/public/monoxide'
+      fullPath: '/api/public/monoxide'
+      preLoaderRoute: typeof ApiPublicMonoxideRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/stolensite2/$': {
@@ -139,6 +159,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiPublicMonoxideRoute: ApiPublicMonoxideRoute,
   ApiPublicOwnerRoute: ApiPublicOwnerRoute,
   ApiPublicBrotatoSplatRoute: ApiPublicBrotatoSplatRoute,
   ApiPublicStolensiteSplatRoute: ApiPublicStolensiteSplatRoute,
